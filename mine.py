@@ -2,27 +2,23 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import typing
-
-# Config save
+import pygame
 import pickle
 
 # Mine logic
 import MineSM as msm
 
 # Input cards
-#import lib16inpind as ic
+import lib16inpind as ic
 
 
 def play_click_sound():
-    pass #print("CLICK SOUND PLAYED")
+    pygame.mixer.music.load("click.wav")
+    pygame.mixer.music.play()
 
 def play_boom_sound():
-    pass #print("BOOM SOUND PLAYED")
-
-#!/usr/bin/python3
-import tkinter as tk
-import tkinter.ttk as ttk
-
+    pygame.mixer.music.load("boom.wav")
+    pygame.mixer.music.play()
 
 
 class MinefieldApp:
@@ -1456,17 +1452,12 @@ def init_mine_states():
 def int_to_bool_list(num):
     return [bool(num & (1<<n)) for n in range(16)]
 
-increment_test_value = 0
-
 def scan_inputs(app):
 
     scan_result = []
 
     for card_id in range(8):
-        #scan_result.append(int_to_bool_list(ic.readAll(card_id)))
-        global increment_test_value
-        scan_result.append(int_to_bool_list( increment_test_value)) #test only
-        increment_test_value=increment_test_value+1                 # test only
+        scan_result.append(int_to_bool_list(ic.readAll(card_id)))
 
     # scan_result should be a list of 8 lists with 8 bools in each list
 
