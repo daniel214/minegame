@@ -1452,12 +1452,23 @@ def init_mine_states():
 def int_to_bool_list(num):
     return [bool(num & (1<<n)) for n in range(16)]
 
+
+scan_result_save = []
+
 def scan_inputs(app):
 
     scan_result = []
+    global scan_result_save
 
-    for card_id in range(8):
-        scan_result.append(int_to_bool_list(ic.readAll(card_id)))
+    try:
+        for card_id in range(8):
+            scan_result.append(int_to_bool_list(ic.readAll(card_id)))
+        scan_result_save = scan_result
+    except:
+        # On an error, use the previous scan values
+        print("Caught an IO error on I2C")
+        scan_result = scan_result_save
+
 
     # scan_result should be a list of 8 lists with 8 bools in each list
 

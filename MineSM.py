@@ -90,6 +90,7 @@ class stateUninitialized(StateBase):
 class stateIdle(StateBase):
     def active(self) -> Sound:
         self.mine.setMine(stateClickDebounce())
+        self.mine._timestamp = time.monotonic()
         return Sound.NO_SOUND
 
     def inactive(self) -> Sound:
@@ -98,14 +99,12 @@ class stateIdle(StateBase):
 class stateClickDebounce(StateBase):
     def active(self) -> Sound:
         if (time.monotonic() - self.mine._timestamp) > self.mine._click_debounce_sec:
-            self.mine._timestamp = time.monotonic()
             self.mine.setMine(stateClick())
             return Sound.CLICK
         else:
             return Sound.NO_SOUND
 
     def inactive(self) -> Sound:
-        self.mine._timestamp = time.monotonic()
         self.mine.setMine(stateIdle())
         return Sound.NO_SOUND
 
@@ -115,17 +114,16 @@ class stateClick(StateBase):
 
     def inactive(self) -> Sound:
         self.mine.setMine(stateBoomDebounce())
+        self.mine._timestamp = time.monotonic()
         return Sound.NO_SOUND
 
 class stateBoomDebounce(StateBase):
     def active(self) -> Sound:
-        self.mine._timestamp = time.monotonic()
         self.mine.setMine(stateClick())
         return Sound.NO_SOUND
 
     def inactive(self) -> Sound:
         if (time.monotonic() - self.mine._timestamp) > self.mine._boom_debounce_sec:
-            self.mine._timestamp = time.monotonic()
             if self.mine._mines_self_reset == True:
                 self.mine.setMine(stateIdle())
             else:
