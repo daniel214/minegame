@@ -1574,6 +1574,7 @@ def load_config_from_file(app:MinefieldApp):
 # Custom handler loop to accomodate game logic
 if __name__ == "__main__":
     init_mine_states()
+    pygame.mixer.init()
 
     app = MinefieldApp()
     app.minewindow.protocol("WM_DELETE_WINDOW", on_closing)
