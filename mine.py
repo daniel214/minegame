@@ -1482,7 +1482,10 @@ def scan_inputs(app):
             # Check disabled state
             disabled = getattr(app, "disableval{}_{}".format(card_id+1,ch_id+1)).get()
 
-            res = mine_states[card_id][ch_id].inputReading(ch_val)
+            if disabled == True:
+                res = msm.Sound.NO_SOUND
+            else:
+                res = mine_states[card_id][ch_id].inputReading(ch_val)
 
             if res.value > sound_to_play:
                 sound_to_play = res.value     # play the worst sound we find
